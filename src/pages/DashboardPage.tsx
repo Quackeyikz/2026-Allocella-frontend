@@ -34,7 +34,7 @@ export default function DashboardPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen w-screen flex flex-col items-center justify-center bg-linear-to-br from-white to-green-100">
             <Navbar />
 
             <main className="container mx-auto px-4 py-8">
