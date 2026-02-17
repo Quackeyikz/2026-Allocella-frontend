@@ -66,6 +66,9 @@ export default function BookingsPage() {
         setLoading(true);
 
         try {
+            const startDateTime = new Date(formData.startTime).toISOString();
+            const endDateTime = new Date(formData.endTime).toISOString();
+
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/Bookings`, {
                 method: 'POST',
                 headers: {
@@ -74,8 +77,8 @@ export default function BookingsPage() {
                 },
                 body: JSON.stringify({
                     roomId: parseInt(formData.roomId),
-                    startTime: formData.startTime,
-                    endTime: formData.endTime,
+                    startTime: startDateTime,
+                    endTime: endDateTime,
                     purpose: formData.purpose,
                 }),
             });
@@ -176,10 +179,11 @@ export default function BookingsPage() {
 
                             <button
                                 type="submit"
-                                disabled={loading}
+                                // disabled={loading}
                                 className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition disabled:opacity-50"
                             >
-                                {loading ? 'Creating...' : 'Create Booking'}
+                                {/* {loading ? 'Creating...' : 'Create Booking'} */}
+                                Create Booking
                             </button>
                         </form>
                     </div>

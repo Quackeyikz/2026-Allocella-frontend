@@ -20,7 +20,7 @@ export default function App() {
 				<Route path="/rooms" element={<ProtectedRoute><RoomsPage /></ProtectedRoute>} />
 				<Route path="/bookings" element={<ProtectedRoute><BookingsPage /></ProtectedRoute>} />
 				<Route path="/bookings/new" element={<ProtectedRoute><BookingsPage /></ProtectedRoute>} />
-				<Route path="/" element={<Navigate to="/login" replace />} />
+				<Route path="/" element={<Navigate to="/dashboard" replace />} />
 			</Routes>
 		</BrowserRouter>
 	);

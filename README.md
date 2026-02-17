@@ -18,3 +18,7 @@ Front-end initial
     ```bash
     npm install -D tailwindcss postcss autoprefixer @types/node @tailwindcss/vite
     ```
+3. Bootstrap Icons
+    ```bash
+    npm install react-icons bootstrap-icons
+    ```
