@@ -131,12 +131,12 @@ export default function LoginPage() {
                         {loading ? 'Logging in...' : 'Login'}
                     </button>
 
-                    <p className="text-center">Already Have an Account? <a href="/register" className="text-green-700">Register</a></p>
+                    <p className="text-center">Don't have an account? <a href="/register" className="text-green-700">Register</a></p>
                 </form>
             </div>
 
             <div className="fixed bottom-10 left-1/2 -translate-x-1/2">
-                <a href={import.meta.env.VITE_API_BASE_URL + '/swagger'} target="_blank" className="text-green-700 hover:text-green-900 cursor-pointer">
+                <a href={import.meta.env.VITE_API_BASE_URL + '/swagger'} target="_blank" className="text-green-700 hover:text-green-900 cursor-pointer hover:underline">
                     [ API Documentation ]
                 </a>
             </div>
