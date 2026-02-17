@@ -6,8 +6,6 @@ interface Booking {
     id: number;
     roomId: number;
     roomName: string;
-    roomNumber: string;
-    building: string;
     startTime: string;
     endTime: string;
     purpose: string;
@@ -35,6 +33,7 @@ export default function BookingsPage() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+
         if (!token) {
             navigate('/login');
             return;
@@ -111,7 +110,7 @@ export default function BookingsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-white to-green-200">
+        <div className="min-h-screen min-w-screen bg-linear-to-br from-white to-green-200">
             <Navbar />
 
             <main className="container mx-auto px-4 py-8">
@@ -209,9 +208,14 @@ export default function BookingsPage() {
 
                                 <p className="text-gray-600 bg-gray-100 rounded-lg px-5 py-3 w-full mb-3">{booking.purpose}</p>
 
-                                <div className="text-sm text-gray-600">
-                                    <p>🕐 Start: {new Date(booking.startTime).toLocaleString()}</p>
-                                    <p>🕐 End: {new Date(booking.endTime).toLocaleString()}</p>
+                                <div className="flex flex-row justify-between">
+                                    <div className="text-sm text-gray-600">
+                                        <p>🕐 Start: {new Date(booking.startTime).toLocaleString()}</p>
+                                        <p>🕐 End: {new Date(booking.endTime).toLocaleString()}</p>
+                                    </div>
+                                    <button className={` ${booking.status === 'pending' ? 'block' : 'hidden'} mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition`}>
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
                         ))}

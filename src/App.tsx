@@ -4,6 +4,7 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import RoomsPage from './pages/RoomsPage';
 import BookingsPage from './pages/BookingsPage';
+import AdminAllBookingsPage from './pages/admin/AdminAllBookingsPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
 	const token = localStorage.getItem('token');
@@ -20,7 +21,11 @@ export default function App() {
 				<Route path="/rooms" element={<ProtectedRoute><RoomsPage /></ProtectedRoute>} />
 				<Route path="/bookings" element={<ProtectedRoute><BookingsPage /></ProtectedRoute>} />
 				<Route path="/bookings/new" element={<ProtectedRoute><BookingsPage /></ProtectedRoute>} />
-				<Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+				{/* Admin routes */}
+				<Route path="/admin/all-bookings" element={<ProtectedRoute><AdminAllBookingsPage /></ProtectedRoute>} />
+
+				<Route path="/" element={<Navigate to="/login" replace />} />
 			</Routes>
 		</BrowserRouter>
 	);

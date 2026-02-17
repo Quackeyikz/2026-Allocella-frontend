@@ -4,6 +4,7 @@ export default function Navbar() {
     const navigate = useNavigate();
     const userStr = localStorage.getItem('user');
     const user = userStr ? JSON.parse(userStr) : null;
+    const isAdmin = user?.role === 'admin';
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -12,40 +13,50 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="bg-white shadow-sm w-screen sticky top-0 z-10 border-b border-gray-200">
+        <nav className="bg-white shadow-sm border-b border-gray-200">
             <div className="container mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-8">
-                        <h1 className="text-md font-bold text-blue-500 cursor-pointer" onClick={() => navigate('/dashboard')}>
+                        <h1 className="text-2xl font-bold text-green-500 cursor-pointer" onClick={() => navigate('/dashboard')}>
                             Allocella
                         </h1>
 
                         <div className="hidden md:flex space-x-4">
-                            <button
-                                onClick={() => navigate('/dashboard')}
-                                className="text-gray-700 hover:text-blue-500 transition"
-                            >
+                            <button onClick={() => navigate('/dashboard')} className="text-gray-700 hover:text-blue-500 transition">
                                 Dashboard
                             </button>
-                            <button
-                                onClick={() => navigate('/rooms')}
-                                className="text-gray-700 hover:text-blue-500 transition"
-                            >
+                            <button onClick={() => navigate('/rooms')} className="text-gray-700 hover:text-blue-500 transition">
                                 Rooms
                             </button>
-                            <button
-                                onClick={() => navigate('/bookings')}
-                                className="text-gray-700 hover:text-blue-500 transition"
-                            >
+                            <button onClick={() => navigate('/bookings')} className={`${isAdmin ? 'hidden' : 'text-gray-700 hover:text-blue-500 transition'}`}>
                                 Bookings
                             </button>
+
+                            {/* Admin-only menu items */}
+                            {isAdmin && (
+                                <button onClick={() => navigate('/admin/all-bookings')} className="text-gray-600 hover:text-gray-700 font-semibold transition">
+                                    All Bookings
+                                </button>
+                            )}
                         </div>
                     </div>
 
                     <div className="flex items-center space-x-4">
-                        <span className="text-sm text-gray-600">
-                            {user?.fullName} ({user?.role})
-                        </span>
+                        <div className="text-sm text-right">
+                            <p className="text-gray-900 font-medium flex items-center gap-2">
+                                {user?.fullName}
+                                {isAdmin}
+                            </p>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${isAdmin
+                                    ? 'bg-purple-100 text-purple-800'
+                                    : user?.role === 'lecturer'
+                                        ? 'bg-blue-100 text-blue-800'
+                                        : 'bg-gray-100 text-gray-800'
+                                }`}>
+                                {isAdmin ? 'ADMIN' : user?.role?.toUpperCase()}
+                            </span>
+                        </div>
+
                         <button
                             onClick={handleLogout}
                             className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition text-sm"
