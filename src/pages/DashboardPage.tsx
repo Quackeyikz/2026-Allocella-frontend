@@ -33,17 +33,25 @@ export default function DashboardPage() {
         );
     }
 
+    const isAdmin = user.role === 'admin';
+
     return (
-        <div className="min-h-screen w-screen flex flex-col items-center justify-center bg-linear-to-br from-white to-green-100">
+        <div className="min-h-screen min-w-screen bg-gray-50">
             <Navbar />
 
             <main className="container mx-auto px-4 py-8">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome, {user.fullName}!</h1>
-                    <p className="text-gray-600">Role: {user.role}</p>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                        Welcome, {user.fullName}!
+                        {isAdmin && <span className="text-4xl">👑</span>}
+                    </h1>
+                    <p className={`text-lg ${isAdmin ? 'text-green-600 font-semibold' : 'text-gray-600'}`}>
+                        {isAdmin ? 'Administrator Dashboard - Full System Access' : `${user.role.charAt(0).toUpperCase() + user.role.slice(1)} Dashboard`}
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {/* Standard user cards */}
                     <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
                         <div className="text-blue-500 text-4xl mb-4">🏢</div>
                         <h2 className="text-xl font-semibold mb-2">Browse Rooms</h2>
@@ -56,25 +64,35 @@ export default function DashboardPage() {
                         </button>
                     </div>
 
-                    <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-                        <div className="text-green-500 text-4xl mb-4">📅</div>
-                        <h2 className="text-xl font-semibold mb-2">My Bookings</h2>
-                        <p className="text-gray-600 mb-4">Manage your room bookings</p>
-                        <button
-                            onClick={() => navigate('/bookings')}
-                            className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition"
-                        >
-                            View Bookings
-                        </button>
-                    </div>
+                    {isAdmin && (
+                        <>
+                            <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition text-gray-800">
+                                <div className="text-5xl mb-4">✅</div>
+                                <h2 className="text-xl font-bold mb-2">Approve Bookings</h2>
+                                <p className="text-gray-800 mb-4">Review and approve/reject pending booking requests</p>
+                                <button
+                                    onClick={() => navigate('/admin/all-bookings')}
+                                    className="w-full bg-white text-green-600 font-semibold py-2 rounded-lg hover:bg-purple-50 transition"
+                                >
+                                    Manage All Bookings
+                                </button>
+                            </div>
+                        </>
+                    )}
 
                     <div className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
                         <div className="text-purple-500 text-4xl mb-4">👤</div>
                         <h2 className="text-xl font-semibold mb-2">Profile</h2>
-                        <p className="text-gray-600 mb-4">
-                            Email: {user.email}<br />
-                            Role: {user.role}
-                        </p>
+                        <div className="text-gray-600 mb-4 space-y-1">
+                            <p className="text-sm"><strong>Email:</strong> {user.email}</p>
+                            <p className="text-sm">
+                                <strong>Role:</strong>
+                                <span className={isAdmin ? 'font-bold text-purple-600 ml-1' : 'ml-1'}>
+                                    {user.role}
+                                    {isAdmin && ' 👑'}
+                                </span>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </main>

@@ -12,6 +12,8 @@ interface Booking {
     status: string;
 }
 
+const InitCap = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
 export default function BookingsPage() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -31,6 +33,7 @@ export default function BookingsPage() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+
         if (!token) {
             navigate('/login');
             return;
@@ -107,17 +110,17 @@ export default function BookingsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen min-w-screen bg-linear-to-br from-white to-green-200">
             <Navbar />
 
             <main className="container mx-auto px-4 py-8">
                 <div className="mb-8 flex justify-between items-center">
-                    <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
+                    <h1 className="text-3xl font-bold text-gray-900"><i className="bi bi-calendar-check"></i> &nbsp;My Bookings</h1>
                     <button
                         onClick={() => setShowForm(!showForm)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition"
+                        className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition"
                     >
-                        {showForm ? 'View Bookings' : 'New Booking'}
+                        {showForm ? <span><i className="bi bi-card-checklist"></i> View Bookings</span> : <span><i className="bi bi-plus-circle"></i> New Booking</span>}
                     </button>
                 </div>
 
@@ -128,7 +131,7 @@ export default function BookingsPage() {
                 )}
 
                 {showForm ? (
-                    <div className="bg-white p-8 rounded-lg shadow max-w-2xl">
+                    <div className="bg-white p-8 rounded-4xl ring-4 ring-sky-300 shadow max-w-2xl mx-auto">
                         <h2 className="text-2xl font-bold mb-6">Create New Booking</h2>
 
                         <form onSubmit={handleSubmit} className="space-y-4">
@@ -188,25 +191,31 @@ export default function BookingsPage() {
                         </form>
                     </div>
                 ) : (
-                    <div className="space-y-4">
+                    <div className="space-y-6">
                         {bookings.map((booking) => (
-                            <div key={booking.id} className="bg-white p-6 rounded-lg shadow">
+                            <div key={booking.id} className={`bg-white ring-4 ${booking.status === 'approved' ? 'ring-green-200' : booking.status === 'pending' ? 'ring-yellow-200' : 'ring-red-200'} p-6 rounded-4xl`}>
                                 <div className="flex justify-between items-start mb-4">
                                     <div>
                                         <h3 className="text-xl font-semibold text-gray-900">{booking.roomName}</h3>
-                                        <p className="text-gray-600">{booking.purpose}</p>
                                     </div>
                                     <span className={`px-3 py-1 rounded-full text-sm ${booking.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                            booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                                'bg-red-100 text-red-800'
-                                        }`}>
-                                        {booking.status}
+                                        booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                        'bg-red-100 text-red-800'
+                                    }`}>
+                                        {InitCap(booking.status)}
                                     </span>
                                 </div>
 
-                                <div className="text-sm text-gray-600">
-                                    <p>🕐 Start: {new Date(booking.startTime).toLocaleString()}</p>
-                                    <p>🕐 End: {new Date(booking.endTime).toLocaleString()}</p>
+                                <p className="text-gray-600 bg-gray-100 rounded-lg px-5 py-3 w-full mb-3">{booking.purpose}</p>
+
+                                <div className="flex flex-row justify-between">
+                                    <div className="text-sm text-gray-600">
+                                        <p>🕐 Start: {new Date(booking.startTime).toLocaleString()}</p>
+                                        <p>🕐 End: {new Date(booking.endTime).toLocaleString()}</p>
+                                    </div>
+                                    <button className={` ${booking.status === 'pending' ? 'block' : 'hidden'} mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg transition`}>
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
                         ))}
